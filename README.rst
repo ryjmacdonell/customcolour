@@ -15,7 +15,7 @@ To install, clone the repository and run the setup script.::
 Usage
 -----
 CustomColour is made to work with `Matplotlib <https://matplotlib.org>`_. A
-custom colormap can easily be incorporated into any plotting script.::
+custom colormap can easily be incorporated into any plotting script::
 
     import numpy as np
     import matplotlib.pyplot as plt
