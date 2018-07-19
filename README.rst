@@ -1,6 +1,9 @@
 .. image:: https://travis-ci.org/ryjmacdonell/customcolour.svg?branch=master
     :target: https://travis-ci.org/ryjmacdonell/customcolour
 
+.. image:: https://readthedocs.org/projects/customcolour/badge/?version=latest
+    :target: https://customcolour.readthedocs.io/en/latest/?badge=latest
+
 .. image:: https://codecov.io/gh/ryjmacdonell/customcolour/branch/master/graph/badge.svg
     :target: https://codecov.io/gh/ryjmacdonell/customcolour
 
