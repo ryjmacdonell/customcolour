@@ -9,13 +9,13 @@ import customcolour.cmap as cm
 
 def test_import_colormap_from_string():
     cmap1 = plt.cm.get_cmap('jet')
-    cmap2 = cm.import_cmap('jet')
+    cmap2 = cm.import_colormap('jet')
     assert cmap1 == cmap2
 
 
 def test_import_colormap_from_colormap():
     cmap1 = plt.cm.get_cmap('jet')
-    cmap2 = cm.import_cmap(cmap1)
+    cmap2 = cm.import_colormap(cmap1)
     assert cmap1 == cmap2
 
 
@@ -40,22 +40,28 @@ def test_rgba_red_lightness():
 def test_grayscale_color():
     cmap1 = cm.import_colormap('jet')
     cmap2 = cm.grayscale_colormap(cmap1)
-    c1 = rgba_lightness(cmap1(cmap1.N // 2))
-    c2 = cmap2(cmap2.N // 2)
-    assert col.same_color(c1, c2)
+    c1 = cm.rgba_lightness(cmap1(cmap1.N // 2))
+    c2 = cmap2(cmap2.N // 2)[0]
+    assert abs(c1 - c2) < 1e-10
 
 
 def test_grayscale_name():
     cmap = cm.grayscale_colormap('jet')
-    assert cmap.name = 'gjet'
+    assert cmap.name == 'gjet'
 
 
 def test_invert_color():
     cmap1 = cm.import_colormap('jet')
     cmap2 = cm.invert_colormap(cmap1)
-    c1 = 1 - np.array(cmap1(0))
+    c1 = np.array(cmap1(0))
+    c1[:3] = 1 - c1[:3]
     c2 = np.array(cmap2(0))
     assert col.same_color(c1, c2)
+
+
+def test_invert_name():
+    cmap = cm.invert_colormap('jet')
+    assert cmap.name == 'ijet'
 
 
 def test_add_black_to_start():

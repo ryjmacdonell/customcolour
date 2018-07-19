@@ -1,3 +1,6 @@
+.. image:: https://travis-ci.org/ryjmacdonell/customcolour.svg?branch=master
+    :target: https://travis-ci.org/ryjmacdonell/customcolour
+
 CustomColour
 ============
 A package of custom matplotlib colour tools and transformations.

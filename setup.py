@@ -31,5 +31,5 @@ setup(
         'Programming Language :: Python :: 3.5',
         'Topic :: Scientific/Engineering :: Visualization'
                  ],
-    install_requires=['numpy']
+    install_requires=['numpy>=1.7.0', 'matplotlib>=2.2.2']
       )
