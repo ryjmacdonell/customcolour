@@ -1,5 +1,5 @@
 """
-Tests for the different customcmap functionalities
+Script for plotting the different colormap types.
 """
 import numpy as np
 import matplotlib.pyplot as plt
@@ -13,6 +13,9 @@ def main():
     """
     cmaps = [
         cm.wiridis,
+        cm.grayscale_colormap(cm.wiridis),
+        cm.grayscale_colormap('jet'),
+        cm.invert_colormap('jet'),
         cm.add_black('jet'),
         cm.add_black('jet', loc='end'),
         cm.add_white('jet', loc='mid'),

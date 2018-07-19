@@ -1,3 +1,9 @@
+.. image:: https://travis-ci.org/ryjmacdonell/customcolour.svg?branch=master
+    :target: https://travis-ci.org/ryjmacdonell/customcolour
+
+.. image:: https://codecov.io/gh/ryjmacdonell/customcolour/branch/master/graph/badge.svg
+    :target: https://codecov.io/gh/ryjmacdonell/customcolour
+
 CustomColour
 ============
 A package of custom matplotlib colour tools and transformations.
@@ -15,7 +21,7 @@ To install, clone the repository and run the setup script.::
 Usage
 -----
 CustomColour is made to work with `Matplotlib <https://matplotlib.org>`_. A
-custom colormap can easily be incorporated into any plotting script.::
+custom colormap can easily be incorporated into any plotting script::
 
     import numpy as np
     import matplotlib.pyplot as plt

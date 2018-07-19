@@ -3,7 +3,7 @@ Module containing custom colormaps and transformations
 """
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib import colors
+import matplotlib.colors as col
 
 
 class Custom(object):
@@ -32,18 +32,47 @@ def import_colormap(cmap):
         return cmap
 
 
-def invert_colormap(cmap, ncolor=256):
+def rgba_lightness(rgba):
+    """Determines the lightness elements of an RGBA list.
+
+    Based on jakevdp.github.io/blog/2014/10/16/how-bad-is-your-colormap
+    """
+    rgba = np.array(rgba)
+    rgb_wgt = [0.299, 0.587, 0.114]
+    return np.sqrt(np.dot(rgba[...,:3]**2, rgb_wgt))
+
+
+def grayscale_colormap(cmap, ncolor=None):
+    """Turns cmap into greyscale."""
+    cm = import_colormap(cmap)
+    if ncolor is None:
+        ncolor = cm.N
+    clist = cm(np.linspace(0, 1, ncolor))
+    clist[:,:3] = rgba_lightness(clist)[:,np.newaxis]
+
+    return col.LinearSegmentedColormap.from_list('g' + cm.name, clist)
+
+
+def invert_colormap(cmap, ncolor=None):
     """Invert colours from a colormap."""
     cm = import_colormap(cmap)
+    if ncolor is None:
+        ncolor = cm.N
     clist = cm(np.linspace(0, 1, ncolor))
     clist[:,:3] = 1 - clist[:,:3]
 
-    return LinearSegmentedColormap.from_list('i' + cm.name, clist)
+    return col.LinearSegmentedColormap.from_list('i' + cm.name, clist)
 
 
-def add_rgba(cmap, rgba, nblend=16, loc='start', ncolor=256):
-    """Blend an RGBA into a given position in the colormap."""
+def add_rgba(cmap, rgba, nblend=28, loc='start', ncolor=None):
+    """Blend an RGBA into a given position in the colormap.
+
+    Default value of nblend is consistent with rate of change in lightness
+    of matplotlib uniform colormaps (viridis, plasma).
+    """
     cm = import_colormap(cmap)
+    if ncolor is None:
+        ncolor = cm.N
     norig = ncolor - nblend
     clisti = cm(np.linspace(0, 1, norig))
     if loc == 'start' or loc == 0:
@@ -62,21 +91,13 @@ def add_rgba(cmap, rgba, nblend=16, loc='start', ncolor=256):
 
         nfwd = (nblend + 1) // 2
         nbak = (nblend + 1) // 2 + (nblend + 1) % 2
-        resfwd = nmid + nfwd - norig
-        resbak = nbak - nmid
-        if resfwd > 0:
-            nfwd -= resfwd
-            nbak += resfwd
-        elif resbak > 0:
-            nfwd += resbak
-            nbak -= resbak
         clstart = clisti[:nmid]
         clend = clisti[nmid:]
         clmid1 = blend_rgba(clstart[-1], rgba, nbak)
         clmid2 = blend_rgba(rgba, clend[0], nfwd)[1:]
         clist = np.vstack((clstart, clmid1, clmid2, clend))
 
-    return colors.LinearSegmentedColormap.from_list('a' + cm.name, clist)
+    return col.LinearSegmentedColormap.from_list('a' + cm.name, clist)
 
 
 def add_white(cmap, *args, **kwargs):
