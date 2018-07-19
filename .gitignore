@@ -10,3 +10,6 @@ build/
 
 # Cache files
 *.pytest_cache/
+
+# Sphinx generated files
+docs/_*
