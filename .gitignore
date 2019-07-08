@@ -7,3 +7,6 @@ dist/
 build/
 *.egg
 *.egg-info/
+
+# Sphinx generated files
+docs/_*
