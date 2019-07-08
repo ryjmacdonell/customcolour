@@ -179,29 +179,29 @@ def add_rgba(cmap, rgba, nblend=28, loc='start', ncolor=None):
     cm = import_colormap(cmap)
     if ncolor is None:
         ncolor = cm.N
-    norig = ncolor - nblend
+    norig = ncolor - nblend + 1
     clisti = cm(np.linspace(0, 1, norig))
     if loc == 'start' or loc == 0:
         clistn = blend_rgba(rgba, clisti[0], nblend)
-        clist = np.vstack((clistn, clisti))
+        clist = np.vstack((clistn[:-1], clisti))
     elif loc == 'end' or loc == 1:
         clistn = blend_rgba(clisti[-1], rgba, nblend)
-        clist = np.vstack((clisti, clistn))
+        clist = np.vstack((clisti, clistn[1:]))
     else:
         if loc == 'mid':
             nmid = norig // 2
         elif loc > 0 and loc < 1:
-            nmid = round(norig*loc)
+            nmid = round(ncolor*loc) - nblend // 2
         else:
             raise ValueError('unrecognized value for \'loc\': {}'.format(loc))
 
-        nfwd = (nblend + 1) // 2
-        nbak = (nblend + 1) // 2 + (nblend + 1) % 2
+        nfwd = nblend // 2 + 1
+        nbak = nblend // 2 + nblend % 2 + 1
         clstart = clisti[:nmid]
         clend = clisti[nmid:]
         clmid1 = blend_rgba(clstart[-1], rgba, nbak)
-        clmid2 = blend_rgba(rgba, clend[0], nfwd)[1:]
-        clist = np.vstack((clstart, clmid1, clmid2, clend))
+        clmid2 = blend_rgba(rgba, clend[0], nfwd)
+        clist = np.vstack((clstart, clmid1[1:], clmid2[1:-1], clend))
 
     return col.LinearSegmentedColormap.from_list('a' + cm.name, clist)
 

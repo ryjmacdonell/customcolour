@@ -2,6 +2,7 @@
 Tests for the different customcolour functions
 """
 import numpy as np
+import pytest
 import matplotlib.pyplot as plt
 import matplotlib.colors as col
 import customcolour.cmap as cm
@@ -40,8 +41,8 @@ def test_rgba_red_lightness():
 def test_grayscale_color():
     cmap1 = cm.import_colormap('jet')
     cmap2 = cm.grayscale_colormap(cmap1)
-    c1 = cm.rgba_lightness(cmap1(cmap1.N // 2))
-    c2 = cmap2(cmap2.N // 2)[0]
+    c1 = cm.rgba_lightness(cmap1(cmap1.N//2 - 1))
+    c2 = cmap2(cmap2.N//2 - 1)[0]
     assert abs(c1 - c2) < 1e-10
 
 
@@ -71,17 +72,27 @@ def test_add_black_to_start():
 
 def test_add_black_to_end():
     cmap = cm.add_black('jet', loc='end')
-    assert col.same_color(cmap(cmap.N), 'k')
+    assert col.same_color(cmap(cmap.N-1), 'k')
 
 
 def test_add_black_to_mid():
     cmap = cm.add_black('jet', loc='mid')
-    assert col.same_color(cmap(cmap.N // 2), 'k')
+    assert col.same_color(cmap(cmap.N//2 - 1), 'k')
+
+
+def test_add_black_fraction():
+    cmap = cm.add_black('jet', loc=0.25)
+    assert col.same_color(cmap(cmap.N//4 - 1), 'k')
 
 
 def test_add_white_to_start():
     cmap = cm.add_white('jet')
     assert col.same_color(cmap(0), 'w')
+
+
+def test_add_rgba_loc_fails():
+    with pytest.raises(ValueError, match='unrecognized value for .*'):
+        cm.add_rgba('jet', [0.5, 1, 0.5], loc=2)
 
 
 def test_wiridis_start():
@@ -92,4 +103,4 @@ def test_wiridis_start():
 def test_wiridis_end():
     cmap = cm.wiridis
     end_colour = (0.267004, 0.004874, 0.329415, 1.0)
-    assert col.same_color(cmap(cmap.N), end_colour)
+    assert col.same_color(cmap(cmap.N-1), end_colour)
