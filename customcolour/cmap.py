@@ -196,7 +196,7 @@ def add_rgba(cmap, rgba, nblend=28, loc='start', ncolor=None):
             raise ValueError('unrecognized value for \'loc\': {}'.format(loc))
 
         nfwd = nblend // 2 + 1
-        nbak = nblend // 2 + nblend % 2
+        nbak = nblend // 2 + nblend % 2 + 1
         clstart = clisti[:nmid]
         clend = clisti[nmid:]
         clmid1 = blend_rgba(clstart[-1], rgba, nbak)
