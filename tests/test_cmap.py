@@ -2,6 +2,7 @@
 Tests for the different customcolour functions
 """
 import numpy as np
+import pytest
 import matplotlib.pyplot as plt
 import matplotlib.colors as col
 import customcolour.cmap as cm
@@ -79,9 +80,19 @@ def test_add_black_to_mid():
     assert col.same_color(cmap(cmap.N//2 - 1), 'k')
 
 
+def test_add_black_fraction():
+    cmap = cm.add_black('jet', loc=0.25)
+    assert col.same_color(cmap(cmap.N//4 - 1), 'k')
+
+
 def test_add_white_to_start():
     cmap = cm.add_white('jet')
     assert col.same_color(cmap(0), 'w')
+
+
+def test_add_rgba_loc_fails():
+    with pytest.raises(ValueError, match='unrecognized value for .*'):
+        cm.add_rgba('jet', [0.5, 1, 0.5], loc=2)
 
 
 def test_wiridis_start():

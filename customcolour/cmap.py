@@ -191,7 +191,7 @@ def add_rgba(cmap, rgba, nblend=28, loc='start', ncolor=None):
         if loc == 'mid':
             nmid = norig // 2
         elif loc > 0 and loc < 1:
-            nmid = round(norig*loc)
+            nmid = round(ncolor*loc) - nblend // 2
         else:
             raise ValueError('unrecognized value for \'loc\': {}'.format(loc))
 
